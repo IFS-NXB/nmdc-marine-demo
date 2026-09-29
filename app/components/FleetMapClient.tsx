@@ -5,6 +5,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Vessel } from '@/lib/supabase';
 import { getWeatherAtLocation, getWeatherIcon, getRiskColor } from '@/lib/weather';
+import { addBaseTileLayer } from '@/lib/map-tiles';
 
 interface PlannedRoute {
   vesselId: string;
@@ -20,9 +21,6 @@ interface FleetMapClientProps {
   plannedRoutes?: PlannedRoute[];
   onPlanRoute?: (vesselId: string) => void;
 }
-
-// Mapbox token from environment
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 // Maximum points to keep in route history
 const MAX_ROUTE_POINTS = 50;
@@ -204,22 +202,8 @@ export function FleetMapClient({
         attributionControl: false,
       });
 
-      // Add map tile layer
-      if (MAPBOX_TOKEN) {
-        // Mapbox Navigation Night style
-        L.tileLayer(
-          `https://api.mapbox.com/styles/v1/mapbox/navigation-night-v1/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`,
-          {
-            maxZoom: 19,
-            tileSize: 512,
-            zoomOffset: -1,
-          }
-        ).addTo(map);
-      } else {
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-          maxZoom: 19,
-        }).addTo(map);
-      }
+      // Add map tile layer (Mapbox when a token is configured, CARTO otherwise)
+      addBaseTileLayer(L, map);
 
       // Add OpenSeaMap overlay for maritime features
       L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {

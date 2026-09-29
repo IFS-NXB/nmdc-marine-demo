@@ -26,9 +26,7 @@ import {
   Waves,
 } from 'lucide-react';
 import type { SimplifiedVessel } from '@/lib/datalastic';
-
-// Mapbox token from environment
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+import { addBaseTileLayer } from '@/lib/map-tiles';
 
 interface VesselInfo {
   uuid: string;
@@ -212,16 +210,7 @@ function VesselTrackingContent({ mmsi }: { mmsi: string }) {
         zoomControl: true,
       });
 
-      if (MAPBOX_TOKEN) {
-        leafletRef.current.tileLayer(
-          `https://api.mapbox.com/styles/v1/mapbox/navigation-night-v1/tiles/{z}/{x}/{y}?access_token=${MAPBOX_TOKEN}`,
-          { maxZoom: 19, tileSize: 512, zoomOffset: -1 }
-        ).addTo(map);
-      } else {
-        leafletRef.current.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-          maxZoom: 19,
-        }).addTo(map);
-      }
+      addBaseTileLayer(leafletRef.current, map);
 
       leafletRef.current.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
         maxZoom: 19,

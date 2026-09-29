@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { Radio, Ship, ChevronLeft, RefreshCw, ExternalLink, Navigation } from 'lucide-react';
 import Link from 'next/link';
 import type { FleetVessel } from '@/app/api/fleet/route';
+import { addBaseTileLayer } from '@/lib/map-tiles';
 import 'leaflet/dist/leaflet.css';
 
 // UAE/Abu Dhabi region
@@ -119,10 +120,7 @@ export default function NMDCFleetMap() {
 
       leafletRef.current.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      leafletRef.current.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        attribution: '&copy; CartoDB',
-      }).addTo(map);
+      addBaseTileLayer(leafletRef.current, map);
 
       mapRef.current = map;
       setMapReady(true);

@@ -22,6 +22,7 @@ import {
   getProjectStats,
   type ProjectSite 
 } from '@/lib/nmdc/projects';
+import { addBaseTileLayer } from '@/lib/map-tiles';
 
 interface VesselInfo {
   mmsi: string;
@@ -108,9 +109,7 @@ export default function ProjectsPage() {
           attributionControl: false,
         });
 
-        leafletRef.current.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-          maxZoom: 19,
-        }).addTo(map);
+        addBaseTileLayer(leafletRef.current, map);
 
         mapRef.current = map;
         setMapReady(true);
