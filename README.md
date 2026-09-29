@@ -65,7 +65,8 @@ OPENAI_API_KEY=your_openai_api_key
 # Get your API key at https://datalastic.com/pricing
 DATALASTIC_API_KEY=your_datalastic_api_key
 
-# Mapbox (Optional - enhances map visuals)
+# Mapbox (map tiles for all map views; falls back to CARTO tiles when unset)
+# MAPBOX_API is accepted as an alternative name for the same token
 NEXT_PUBLIC_MAPBOX_TOKEN=your_mapbox_token
 ```
 

@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { RouteOptimizationResult } from '@/lib/route-optimization/types';
+import { addBaseTileLayer } from '@/lib/map-tiles';
 
 interface RouteComparisonMapClientProps {
   result: RouteOptimizationResult;
@@ -42,10 +43,8 @@ export function RouteComparisonMapClient({
       attributionControl: false,
     });
 
-    // Add dark base tile layer
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-    }).addTo(map);
+    // Add base tile layer (Mapbox when a token is configured, CARTO otherwise)
+    addBaseTileLayer(L, map);
     
     // Add OpenSeaMap nautical overlay for sea marks and navigation aids
     L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
